@@ -10,6 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.prg.domain.EventType;
 import org.prg.domain.GameEvent;
 import org.prg.domain.GameStatistic;
+import org.prg.domain.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     private Map<Integer, GameStatistic> inGame = new HashMap<Integer, GameStatistic>();
 
     @Autowired
-    private GameStatisticProvider provider;
+    private GameStatisticProvider<GameStatistic> provider;
 
     public ExperienceServiceImpl() {
         super();
@@ -41,8 +42,8 @@ public class ExperienceServiceImpl implements ExperienceService {
         }
     }
 
-    public List<GameStatistic> getGameStatistics(int userId) {
-        List<GameStatistic> statistics = provider.getStatistics(userId);
+    public List<GameStatistic> getGameStatistics(int userId, Period period) {
+        List<GameStatistic> statistics = provider.getStatistics(userId, period.getStart(), period.getFinish());
         LOGGER.debug("Game Statistics for user Id:  " + userId + " " + Arrays.toString(statistics.toArray(new GameStatistic[]{})));
         return statistics;
     }

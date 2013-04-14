@@ -1,5 +1,6 @@
 package org.prg.test.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.prg.domain.EventType;
 import org.prg.domain.GameEvent;
 import org.prg.domain.GameStatistic;
+import org.prg.domain.Period;
 import org.prg.service.ExperienceService;
 import org.prg.test.config.ApplicationContext;
 import org.prg.test.util.TestUtil;
@@ -25,6 +27,8 @@ public class ExperienceServiceTest{
     private ExperienceService service;
 
     private CountDownLatch latch;
+    
+    private Date timeTest1, timeTest2;
     
     @Test
     public void receiveEvent() throws InterruptedException {
@@ -46,27 +50,37 @@ public class ExperienceServiceTest{
 
     @Test
     public void getGameStatistic() throws InterruptedException {
-        receiveEvent();
-        List<GameStatistic> stat = service.getGameStatistics(1000);
+        launchEvents();
+        List<GameStatistic> stat = service.getGameStatistics(0, new Period(timeTest1, null));
         Assert.assertNotNull(stat);
-        Assert.assertEquals(30, stat.get(0).getPoints());
+        List<GameStatistic> stat2 = service.getGameStatistics(0, new Period(timeTest1, timeTest2));
+        Assert.assertNotNull(stat2);
+
     }
 
     @Test
     public void receiveEvents()  throws InterruptedException {
-        for (int i = 0; i < 20; i++) {
-            final List<GameEvent> events = TestUtil.generateEventSequence(i);
-            new Thread(new Runnable() {
-                public void run() {
-                    for (GameEvent event : events) {
-                        service.receiveEvent(event);
-                    }
-                }
-            }).start();
-        }
+        launchEvents();
         latch = new CountDownLatch(1);
         latch.await(1, TimeUnit.SECONDS);
         Assert.assertFalse(service.hasIncomingEvents());
+    }
+    
+    private void launchEvents() {
+        for (int j = 0; j < 3; j++) {
+            if (j == 1) timeTest1 = new Date();
+            if (j == 2) timeTest2 = new Date();
+            for (int i = 0; i < 20; i++) {
+                final List<GameEvent> events = TestUtil.generateEventSequence(i);
+                new Thread(new Runnable() {
+                    public void run() {
+                        for (GameEvent event : events) {
+                            service.receiveEvent(event);
+                        }
+                    }
+                }).start();
+            }
+        }
     }
 
 }
