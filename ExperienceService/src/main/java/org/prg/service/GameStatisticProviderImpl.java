@@ -8,10 +8,10 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.prg.domain.GameStatistic;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class GameStatisticProviderImpl implements GameStatisticProvider {
+@Repository
+public class GameStatisticProviderImpl implements GameStatisticProvider<GameStatistic> {
 
     private ConcurrentHashMap<Integer, ArrayList<GameStatistic>> statistics = new ConcurrentHashMap<Integer, ArrayList<GameStatistic>>();
     

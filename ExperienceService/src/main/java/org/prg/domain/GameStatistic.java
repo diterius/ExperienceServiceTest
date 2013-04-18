@@ -5,8 +5,11 @@ import java.util.Date;
 public class GameStatistic implements Comparable<GameStatistic>{
     
     private int userId;
+    
     private Date startTimestamp;
+    
     private Date endTimestamp;
+    
     private int points;
     
     public int getUserId() {

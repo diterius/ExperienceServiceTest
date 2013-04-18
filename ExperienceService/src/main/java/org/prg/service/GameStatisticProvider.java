@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.prg.domain.GameStatistic;
 
-public interface GameStatisticProvider {
+public interface GameStatisticProvider<T extends GameStatistic> {
 
-    public abstract void store(GameStatistic stat);
+    public abstract void store(T stat);
 
     public abstract List<GameStatistic> getStatistics(int userId, Date from, Date to);
 

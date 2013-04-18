@@ -26,7 +26,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     private Map<Integer, GameStatistic> inGame = new HashMap<Integer, GameStatistic>();
 
     @Autowired
-    private GameStatisticProvider provider;
+    private GameStatisticProvider<GameStatistic> provider;
 
     public ExperienceServiceImpl() {
         super();

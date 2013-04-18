@@ -65,7 +65,7 @@ public class ExperienceServiceTest {
         latch.await(3, TimeUnit.SECONDS);
         Assert.assertFalse(service.hasIncomingEvents());
     }
-
+    
     private void launchEvents() throws InterruptedException {
         for (int j = 0; j < 10; j++) {
             if (j == 1) {
