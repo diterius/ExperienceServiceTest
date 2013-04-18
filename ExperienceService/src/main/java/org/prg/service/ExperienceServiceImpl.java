@@ -1,6 +1,7 @@
 package org.prg.service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,6 @@ public class ExperienceServiceImpl implements ExperienceService {
     }
 
     public void receiveEvent(GameEvent event) {
-        LOGGER.debug("Receive Event" + " with ThreadId " + Thread.currentThread().getId());
         try {
             incomingEvents.put(event);
         } catch (InterruptedException e) {
@@ -41,8 +41,8 @@ public class ExperienceServiceImpl implements ExperienceService {
         }
     }
 
-    public List<GameStatistic> getGameStatistics(int userId) {
-        List<GameStatistic> statistics = provider.getStatistics(userId);
+    public List<GameStatistic> getGameStatistics(int userId, Date from, Date to) {
+        List<GameStatistic> statistics = provider.getStatistics(userId, from, to);
         LOGGER.debug("Game Statistics for user Id:  " + userId + " " + Arrays.toString(statistics.toArray(new GameStatistic[]{})));
         return statistics;
     }

@@ -2,7 +2,7 @@ package org.prg.domain;
 
 import java.util.Date;
 
-public class GameStatistic {
+public class GameStatistic implements Comparable<GameStatistic>{
     
     private int userId;
     private Date startTimestamp;
@@ -41,5 +41,13 @@ public class GameStatistic {
     @Override
     public String toString() {
         return "User Id: " + userId + " timestamp: " + startTimestamp + " with points: " + points;
+    }
+    
+    @Override
+    public int compareTo(GameStatistic o) {
+        if (startTimestamp.before(o.startTimestamp)) {  
+            return -1;  
+        }  
+        return 1;  
     }
 }
